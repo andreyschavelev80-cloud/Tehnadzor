@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Генерация иконок для Приёмка.online</title>
+    <style>
+        body { background: #f0f2f5; display: flex; flex-direction: column; align-items: center; gap: 30px; padding: 40px; font-family: sans-serif; }
+        .card { background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; }
+        canvas { border-radius: 16px; }
+        .label { margin-top: 10px; font-weight: bold; color: #1e3a8a; }
+    </style>
+</head>
+<body>
+    <h1>Иконки для сайта «Приёмка.online»</h1>
+    <p>Нажмите на иконку правой кнопкой мыши и выберите «Сохранить картинку как...»</p>
+    <div style="display: flex; gap: 30px; flex-wrap: wrap; justify-content: center;">
+        <div class="card">
+            <canvas id="c192" width="192" height="192"></canvas>
+            <div class="label">favicon-192x192.png</div>
+        </div>
+        <div class="card">
+            <canvas id="c512" width="512" height="512"></canvas>
+            <div class="label">favicon-512x512.png</div>
+        </div>
+        <div class="card">
+            <canvas id="c180" width="180" height="180"></canvas>
+            <div class="label">apple-touch-icon.png</div>
+        </div>
+        <div class="card">
+            <canvas id="c32" width="32" height="32"></canvas>
+            <div class="label">favicon.ico (32x32)</div>
+        </div>
+    </div>
+
+    <script>
+        function drawIcon(ctx, size) {
+            // Фон: доска/чертёж
+            ctx.fillStyle = '#1e3a8a';
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, size * 0.15);
+            ctx.fill();
+
+            // Сетка чертежа
+            ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+            ctx.lineWidth = size * 0.01;
+            for (let i = 0; i < size; i += size/8) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, size); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(size, i); ctx.stroke();
+            }
+
+            // Центральные элементы — размеры адаптивные
+            const cx = size / 2, cy = size / 2;
+            const shieldW = size * 0.55, shieldH = size * 0.65;
+
+            // Щит
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowColor = 'rgba(0,0,0,0.3)';
+            ctx.shadowBlur = size * 0.05;
+            ctx.beginPath();
+            const shieldX = cx - shieldW/2, shieldY = cy - shieldH/2;
+            ctx.moveTo(shieldX, shieldY + shieldH * 0.3);
+            ctx.lineTo(shieldX, shieldY);
+            ctx.lineTo(cx, shieldY - shieldH * 0.15);
+            ctx.lineTo(shieldX + shieldW, shieldY);
+            ctx.lineTo(shieldX + shieldW, shieldY + shieldH * 0.3);
+            ctx.quadraticCurveTo(shieldX + shieldW, shieldY + shieldH, cx, shieldY + shieldH * 0.9);
+            ctx.quadraticCurveTo(shieldX, shieldY + shieldH, shieldX, shieldY + shieldH * 0.3);
+            ctx.fill();
+            ctx.shadowColor = 'transparent';
+
+            // Галочка в щите
+            ctx.fillStyle = '#10b981';
+            ctx.beginPath();
+            const checkX = cx - shieldW * 0.25, checkY = cy + shieldH * 0.05;
+            ctx.moveTo(checkX - shieldW * 0.1, checkY);
+            ctx.lineTo(checkX, checkY + shieldH * 0.15);
+            ctx.lineTo(checkX + shieldW * 0.4, checkY - shieldH * 0.2);
+            ctx.lineWidth = size * 0.06;
+            ctx.strokeStyle = '#10b981';
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.stroke();
+
+            // Лупа (справа внизу)
+            const glassX = cx + shieldW * 0.3, glassY = cy + shieldH * 0.25;
+            const glassR = size * 0.08;
+            ctx.beginPath();
+            ctx.arc(glassX, glassY, glassR, 0, Math.PI * 2);
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = size * 0.03;
+            ctx.stroke();
+            // Ручка лупы
+            ctx.beginPath();
+            ctx.moveTo(glassX + glassR * 0.7, glassY + glassR * 0.7);
+            ctx.lineTo(glassX + glassR * 1.8, glassY + glassR * 1.8);
+            ctx.strokeStyle = '#f59e0b';
+            ctx.stroke();
+
+            // Строительная каска (над щитом)
+            const helmetX = cx + shieldW * 0.25, helmetY = shieldY - shieldH * 0.05;
+            ctx.fillStyle = '#fbbf24';
+            ctx.beginPath();
+            ctx.ellipse(helmetX, helmetY, size * 0.12, size * 0.07, 0, Math.PI, 0);
+            ctx.fill();
+            ctx.fillRect(helmetX - size*0.12, helmetY - size*0.02, size*0.24, size*0.04);
+            ctx.fillStyle = '#f59e0b';
+            ctx.fillRect(helmetX - size*0.14, helmetY, size*0.28, size*0.02);
+        }
+
+        drawIcon(document.getElementById('c192').getContext('2d'), 192);
+        drawIcon(document.getElementById('c512').getContext('2d'), 512);
+        drawIcon(document.getElementById('c180').getContext('2d'), 180);
+        drawIcon(document.getElementById('c32').getContext('2d'), 32);
+    </script>
+</body>
+</html>
