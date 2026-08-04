@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
-Host: vash-sait.ru
-Sitemap: https://������.online/sitemap.xml
+Host: приёмка.online
+Sitemap: https://приёмка.online/sitemap.xml
